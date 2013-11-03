@@ -1,13 +1,6 @@
-var Container = Backbone.Model.extend({
-	init: function() {
-		alert("INIT!");
-	},
-	
-	defaults: {
-		name: 'name'
+$.ajaxPrefilter(function (options, originalOptions, jqXHR){ 
+	var newObject = {
+		key : 'secret'
 	}
+	options.data = $.param($.extend(originalOptions.data, newObject));
 });
-
-var test = new Container({ name: "home" });
-var name = test.get('name');
-test.save();
