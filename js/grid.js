@@ -1,4 +1,12 @@
 $(function() {
+	resetGrid();
+	
+	$(window).resize(function() {
+		resetGrid();
+	});
+});
+
+function resetGrid() {
 	var w = getWindowWidth(),
 		h = getWindowHeight(),
 		m = 25;
@@ -11,9 +19,7 @@ $(function() {
 	
 	// set any column heights to the window height - any header elements
 	$c.height(h - (m * 2) - $(".header").outerHeight(true));
-	
-	$(".action-required").show();
-});
+}
 
 /**
  * Cross Browser window height & width functions.
