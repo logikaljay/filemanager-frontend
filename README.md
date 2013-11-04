@@ -2,4 +2,4 @@
 See (https://github.com/logikaljay/filemanager)
 
 * Built on Boilerplate (http://html5boilerplate.com)
-* Built with Backbone.js (http://backbonejs.org)
+* Built with knockout.js (http://http://knockoutjs.com/)
