@@ -39,16 +39,27 @@
 					<span class='add' data-bind="click: addContainer"></span>
 				</h3>
 				<ul class="containers" data-bind="foreach: containers">
-					<li><a href='#' data-bind="text: name, click: $root.setContainer, css: { selected: $data == $root.selectedContainer() }"></a></li>
+					<li>
+						<a href='#' data-bind="click: $root.setContainer, css: { selected: $data == $root.selectedContainer() }">
+							<span class='containername' data-bind="text: name"></span>
+							<button class='containeraction' data-bind="click: $root.deleteContainer, visible: $data == $root.selectedContainer()"></button>
+						</a>
+					</li>
 				</ul>
 			</div>
 			<div class="col-23 no-right-margin">
 				<h3>
 					<span class='title' data-bind="text: 'files in \'' + $root.selectedContainer().name + '\' container'"></span>
-					<span class='add'></span>
+					<span class='add' data-bind="click: addFile"></span>
 				</h3>
 				<ul class="files" data-bind="foreach: files">
-					<li><a href='#' data-bind="text: item, click: $root.setFile, css: { selected: $data.id == $root.selectedFile() }"></a></li>
+					<li data-bind="css: 'file-' + id">
+						<a href='#' data-bind="click: $root.setFile, css: { selected: $data.id == $root.selectedFile() }">
+							<span class='wid-13 filename' data-bind="text: item"></span>
+							<span class='wid-13 fileaction' data-bind="visible: $data.id == $root.selectedFile()"></span>
+							<span class='wid-13 filesize' data-bind="text: $root.formatSize(size)"></span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -61,6 +72,24 @@
 			<input type="button" value="Cancel" onclick="closeOverlayBar(<% print(animate); %>)" />
 		</script>
 
+		<script type="text/template" id="delete_container_template">
+			<h3>Delete this container</h3>
+			<p>Are you sure you wish to delete this potentially non-empty container?</p>
+			<input type="button" value="Delete" onclick="deleteContainer()" class="js-delete-container" />
+			<input type="button" value="Cancel" onclick="closeOverlayBar(<% print(animate); %>)" />
+		</script>
+
+		<script type="text/template" id="add_file_template">
+			<h3>Add new file</h3>
+			<label>Upload file</label><br />
+			<input type="hidden" class="js-container-name" value="<% print(container); %>"/>
+			<input type="file" class="js-file-name" name="file" id="file"><br />
+			<input type="button" value="Upload file" onclick="uploadFile()">
+			<input type="button" value="Cancel" onclick="closeOverlayBar(<% print(animate); %>)" />
+			<progress id="progressbar" value="0" max="100" style="width:300px"></progress>
+			<p id="progress-info"></p>
+		</script>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
 		<script src="js/grid.js"></script>
@@ -70,5 +99,6 @@
         <script src="js/main.js"></script>
 		<script src="js/container.js"></script>
 		<script src="js/file.js"></script>
+		<script src="js/upload.js"></script>
     </body>
 </html>

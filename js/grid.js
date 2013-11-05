@@ -27,6 +27,11 @@ function overlayBar(height) {
 		$content: $(".overlay-content")
 	};
 
+	$("body").css({'overflow': 'hidden'});
+	$(document).bind('scroll', function() {
+		window.scrollTo(0,0);
+	});	
+
 	el.$content.html("");
 	el.$wrapper.css({
 		'top': '50%',
@@ -39,6 +44,9 @@ function overlayBar(height) {
 }
 
 function closeOverlayBar(animate) {
+	$("body").css({'overflow':'visible'});
+	$(document).unbind('scroll');
+
 	if (animate) {
 		$(".overlay-wrapper").parent().fadeOut(300);
 	} else {

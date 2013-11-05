@@ -26,6 +26,18 @@ function addContainer() {
 	});
 }
 
+function showDeleteContainer() {
+	var el = overlayBar(200);
+	var template = _.template($("#delete_container_template").html());
+	el.$content.html(template({animate: true}));
+
+	$(".action-required").show();
+}
+
+function deleteContainer() {
+	// TODO: Delete
+}
+
 function redrawContainers(applyBindings) {
 	var viewModel = new MainViewModel();
 	getContainers(function(result) {

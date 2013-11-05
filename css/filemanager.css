@@ -10,7 +10,7 @@ h1, h2, h3, h4 {
 	color:#6e6e6e;
 	background:#e7e7e7;
 	line-height:50px;
-	padding:0 10px;
+	padding:0 0 0 15px;
 	margin-bottom:0;
 }
 
@@ -68,6 +68,10 @@ h1, h2, h3, h4 {
 	float:left;
 }
 
+.grid .wid-13 {
+	width:30%;
+}
+
 .no-left-margin {
 	margin-left:0 !important;
 }
@@ -78,7 +82,7 @@ h1, h2, h3, h4 {
 
 
 /**
- * Page Elements
+ * Containers and Files
  */
 .containers, .files {
 	list-style:none;
@@ -90,17 +94,52 @@ h1, h2, h3, h4 {
 	width:100%;
 }
 
-.containers li a, .files li a {
+.containers li>a, .files li a {
+	position:relative;
 	display:block;
 	height:50px;
 	line-height:50px;
-	padding:0 15px;
+	padding:0 0 0 15px;
+	z-index:1000;
 }
 
-.containers li a:hover, .containers li a.selected, .containers li a:active, .containers li a.active,
+.containers li>a:hover, .containers>li a.selected, .containers>li a:active, .containers li>a.active,
 .files li a:hover, .files li a.selected, .files li a:active, .files li a.active {
 	background:#b3d4fc;
 	color:#fff;
+}
+.containers li a button.containeraction {
+	position:relative;
+	z-index:1001;
+	width:50px;
+	height:50px;
+	float:right;
+	border:none;
+	background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAyCAYAAAAus5mQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAOlJREFUaEPtmDEKAkEQBNdEUzMTQwPFNwh+xsjE1Beob/MDgubmfkC74YRlWT32Zs416IJKmtmZhos0CCGEEH/HFh5a5Ew1zvDZImeqUbXgAK7g+osXmCsVy5nc27e8wVvFDOED5o56yhu8VYwKNqqg1c4FyehHmhnDmbPc6cYO5j6PRe50QwWtpAVv8JpklNmnnG/irNeCSzhPMrpoTHPO8k2cqaAKlqCCVlTQigpaSQueIH+Uxxk9NqY5Z/kmznot6KFrwQ3MHbHInW5M4B3mDnWRu7jTlSncw/iPoS5yB3cJIYQQroTwAgAk9AIHXuRMAAAAAElFTkSuQmCC);
+}
+a.containeraction:hover {
+	background:#7e7e7e;
+}
+
+.files li a span.filename {
+	float:left;
+	display:block;
+	width:25%;
+}
+
+.files li a span.filesize {
+	display:block;
+	width:25%;
+	text-align:right;
+	float:right;
+	padding: 0 15px;
+}
+.files li a span.fileaction {
+	text-align:right;
+	float:right;
+	display:block;
+	height:50px;
+	width:44%;
 }
 
 .header {
@@ -130,6 +169,7 @@ h1, h2, h3, h4 {
 	-moz-opacity:0.8;
 	opacity:.80;
 	filter: alpha(opacity=80);
+	overflow-y:hidden !important;
 }
 	.overlay-wrapper {
 		position:absolute;

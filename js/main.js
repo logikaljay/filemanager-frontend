@@ -40,11 +40,39 @@ function MainViewModel() {
 		});
 	};
 
-	self.setFile = function() {
-		self.selectedFile(this.id);
+	self.setFile = function(data, event) {
+		self.selectedFile(data.id);
+		var file = data;
+		_.extend(file, { container: self.selectedContainer(), event: event, $el: $("file-" + data.id) });
+		selectedFile(file);
 	};
 
 	self.addContainer = showAddContainer;
+	self.deleteContainer = showDeleteContainer;
+
+	self.addFile = function() {
+		showAddFile(self.selectedContainer().name);
+	};
+
+	// Format functions
+	self.formatSize = function(size) {
+		if (size < 1025) {
+			return size.toFixed(2) + " B";
+		}
+
+		size = size / 1024;
+		if (size < 1025) {
+			return size.toFixed(2) + " KB";
+		}
+
+		size = size / 1024;
+		if (size < 1025) {
+			return size.toFixed(2) + " MB";
+		}
+
+		size = size / 1024;
+		return size.toFixed(2) + " GB";
+	}
 }
 
 $(function() {
