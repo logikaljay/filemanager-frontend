@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		function _(el) {
+			return document.getElementById(el);
+		}
+		
+		var timer,
+			timerInterval = 0.2 * 1000,
+			startSeconds,
+			uploaded = 0,
+			total = 0,
+			percent = 0,
+			speed = 0;
+
+		function uploadFile() {
+			var file = _("file1").files[0];
+			var formData = new FormData();
+			formData.append("key", "secret");
+			formData.append("container", "home");
+			formData.append("file", file);
+			
+			// build our request
+			var ajax = new XMLHttpRequest();
+			ajax.upload.addEventListener("progress", progressHandler, false);
+			ajax.addEventListener("load", completeHandler, false);
+			ajax.addEventListener("error", errorHandler, false);
+			ajax.addEventListener("abort", abortHandler, false);
+			ajax.open("POST", "http://conv2.punchy.com:9123/upload");
+			ajax.send(formData);
+			startSeconds = new Date().getTime() / 1000;
+
+			timer = setInterval(function() {
+				var currentSeconds = new Date().getTime() / 1000;
+				var elapsed = currentSeconds - startSeconds;
+				speed = Number(uploaded) / Number(elapsed) / 1024;
+
+				if (percent == 100) {
+					clearInterval(timer);
+				}
+			}, timerInterval);
+		}
+		
+		function progressHandler(e) {
+			uploaded = e.loaded;
+			total = e.total;
+			percent = (uploaded / total) * 100;
+
+			_("loaded_n_total").innerHTML = "Uploaded " + (e.loaded / 1024).toFixed(2) + " kb of " + (e.total / 1024).toFixed(2) + " at " + speed.toFixed(2) + " kb/s";
+			_("progressbar").value = Math.round(percent);
+			_("status").innerHTML = Math.round(percent) + "% uploaded... please wait";
+		}
+		
+		function completeHandler(e) {
+			_("loaded_n_total").innerHTML = "Upload completed at " + speed.toFixed(2) + " kb/s";
+			_("status").innerHTML = e.target.responseText;
+			_("progressbar").value = 0;
+			clearInterval(timer);
+		}
+		
+		function errorHandler(e) {
+			_("status").innerHTML = "Upload Failed";
+			clearInterval(timer);
+		}
+		
+		function abortHandler(e) {
+			_("status").innerHTML = "Upload Aborted";
+			clearInterval(timer);
+		}
+	</script>
+</head>
+<body>
+<form id="upload_form" enctype="multipart/form-data" method="post">
+	<input type="file" name="file1" id="file1"><br />
+	<input type="button" value="Upload File" onclick="uploadFile()">
+	<progress id="progressbar" value="0" max="100" style="width:300px;"></progress>
+	<h3 id="status"></h3>
+	<p id="loaded_n_total"></p>
+</form>
+</body>
+</html>

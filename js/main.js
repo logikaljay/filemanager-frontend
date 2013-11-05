@@ -7,27 +7,46 @@ $.ajaxPrefilter(function (options, originalOptions, jqXHR){
 
 function MainViewModel() {
 	var self = this;
-	self.containers = ko.observableArray([]);
-	self.files = ko.observable();
-	self.selectedContainer = ko.observable();
 	
-	self.getFiles = function() {
-		self.selectedContainer(this.id);
-		console.log(self.selectedContainer());
+	// containers and files
+	self.containers = ko.observableArray([]);
+	self.files = ko.observableArray([]);
+
+	// selected states
+	self.selectedContainer = ko.observable();
+	self.selectedFile = ko.observable();
+	
+	// events
+	self.setContainer = function(container) {
+		if (container == 'undefined')
+			container = this;
+
+		// set the selected container
+		self.selectedContainer(container);
+
+		var i = 1;
+		getFiles(container.name, function(data) {
+			// reset list of files
+			self.files([]);
+			self.selectedFile(0);
+
+			// bind new files to the model
+			var files = data.files;
+			_.each(files, function(file) {
+				_.extend(file, { id: i });
+				self.files.push(file);
+				i++;
+			});
+		});
 	};
+
+	self.setFile = function() {
+		self.selectedFile(this.id);
+	};
+
+	self.addContainer = showAddContainer;
 }
 
 $(function() {
-	getContainers(function(result) {
-		var i = 1;
-		var viewModel = new MainViewModel();
-		var containers = result.containers;
-		_.each(containers, function(container) {
-			_.extend(container, { id: i });
-			viewModel.containers.push(container);
-			i++;
-		});
-
-		ko.applyBindings(viewModel);
-	});
+	redrawContainers(true);
 });

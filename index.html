@@ -23,26 +23,42 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-		
-		<div class="grid">
+		<div class='action-required' data-bind='visible: false'>
+			<div class="overlay-wrapper">
+				<div class="overlay-content">
+					<div class='loading'>Screen loading ...</div>
+				</div>
+			</div>
+			<div class="overlay"></div>
+		</div>
+		<div class="grid" style='display:none;' data-bind='visible: true'>
 			<p class="header">logikaljay</p>
 			<div class="col-13 no-left-margin">
-				<h3>containers</h3>
+				<h3>
+					containers
+					<span class='add' data-bind="click: addContainer"></span>
+				</h3>
 				<ul class="containers" data-bind="foreach: containers">
-					<li><a href='#' data-bind="text: name, click: $root.getFiles, css: { selected: $data.id == $root.selectedContainer() }"></a></li>
+					<li><a href='#' data-bind="text: name, click: $root.setContainer, css: { selected: $data == $root.selectedContainer() }"></a></li>
 				</ul>
 			</div>
 			<div class="col-23 no-right-margin">
-				<h3>selected container</h3>
-				<ul class="containers" data-bind="foreach: containers">
-					<li><a href='#' data-bind="text: name, click: $root.getFiles, css: { selected: $data.id == $root.selectedContainer() }"></a></li>
+				<h3>
+					<span class='title' data-bind="text: 'files in \'' + $root.selectedContainer().name + '\' container'"></span>
+					<span class='add'></span>
+				</h3>
+				<ul class="files" data-bind="foreach: files">
+					<li><a href='#' data-bind="text: item, click: $root.setFile, css: { selected: $data.id == $root.selectedFile() }"></a></li>
 				</ul>
 			</div>
-			<div id="files"></div>
 		</div>
 		
-		<script type="text/template" id="container_template">
-			<li><%= name %></li>
+		<script type="text/template" id="new_container_template">
+			<h3>Add new container</h3>
+			<label>Container Name</label><br />
+			<input type="text" name="container" class="js-container-name" Placeholder="E.g. test" /><br /><br />
+			<input type="button" value="Create" onclick="addContainer()" class="js-add-container" />
+			<input type="button" value="Cancel" onclick="closeOverlayBar(<% print(animate); %>)" />
 		</script>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
